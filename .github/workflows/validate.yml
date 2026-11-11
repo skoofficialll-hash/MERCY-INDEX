@@ -1,0 +1,44 @@
+name: validate-packs
+
+# Runs on every change to the country packs. A bad list never reaches users.
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate every pack
+        run: |
+          python - <<'PY'
+          import json, glob, re, sys
+          CATS = {"gov","state","money","utility","travel","education","health","shop","info","fun","tool"}
+          ok = True
+          for path in sorted(glob.glob("*.json")):
+              if path == "manifest.json":
+                  continue
+              data = json.load(open(path))
+              hosts, names = set(), set()
+              for i, e in enumerate(data):
+                  if not isinstance(e, dict) or set(e) != {"n","u","t","c"}:
+                      print(f"{path}:{i}: wrong fields"); ok = False; continue
+                  if not str(e["u"]).startswith("https://") or "suspicious" in e["u"]:
+                      print(f"{path}:{i}: bad url {e['u']}"); ok = False; continue
+                  if e["c"] not in CATS:
+                      print(f"{path}:{i}: bad category {e['c']}"); ok = False; continue
+                  h = re.sub(r"^https://(www\.)?", "", e["u"]).split("/")[0].lower()
+                  if h in hosts:
+                      print(f"{path}:{i}: duplicate domain {h}"); ok = False; continue
+                  if e["n"].strip().lower() in names:
+                      print(f"{path}:{i}: duplicate name {e['n']}"); ok = False; continue
+                  if not str(e["t"]).strip():
+                      print(f"{path}:{i}: no keywords"); ok = False; continue
+                  hosts.add(h); names.add(e["n"].strip().lower())
+              print(f"{path}: {len(data)} entries checked")
+          sys.exit(0 if ok else 1)
+          PY
