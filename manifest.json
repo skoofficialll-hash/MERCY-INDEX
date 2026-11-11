@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "updated": "2026-11-11",
+  "note": "Data only. One file per country. The app downloads these; the code repo never holds lists.",
+  "packs": {
+    "in": {
+      "name": "India",
+      "file": "india.json",
+      "entries": 551,
+      "bytes": 56565,
+      "sha256": "e6796e4f2bce14f2cd577f99f605810b7c03ef57b44c4ebc01c086b80a3c0b26",
+      "version": 1,
+      "currency": "INR"
+    }
+  }
+}
