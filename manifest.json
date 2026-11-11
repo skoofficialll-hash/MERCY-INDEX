@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "updated": "2026-11-11",
-  "note": "Data only. One file per country. The app downloads these; the code repo never holds lists.",
+  "note": "Data only. One file per country plus one world pack. The app downloads these.",
   "packs": {
     "in": {
       "name": "India",
@@ -9,8 +9,17 @@
       "entries": 551,
       "bytes": 56565,
       "sha256": "e6796e4f2bce14f2cd577f99f605810b7c03ef57b44c4ebc01c086b80a3c0b26",
-      "version": 1,
+      "version": 2,
       "currency": "INR"
+    },
+    "world": {
+      "name": "World finance & companies",
+      "file": "world.json",
+      "entries": 162,
+      "bytes": 19704,
+      "sha256": "8c5722ed637c7ade560a4664455b2198db27289d6f29c6f7da5ca53a9d1ab8d6",
+      "version": 1,
+      "currency": "mixed"
     }
   }
 }
